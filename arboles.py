@@ -45,47 +45,57 @@ class Arbol:
         ø
         ø)))
         """
-        def contador_derecho(self, prof):
-            # return f"({self.raiz}\n{profundidad(prof+1)}{self.derecho}\n{profundidad(prof+1)}{self.izquierdo})"
-            if self is None:
-                return prof
-            prof += 1
-            return contador_derecho(self.derecho, prof)
+        # def contador_derecho(self, prof):
+        #     # return f"({self.raiz}\n{profundidad(prof+1)}{self.derecho}\n{profundidad(prof+1)}{self.izquierdo})"
+        #     if self is None:
+        #         return prof
+        #     prof += 1
+        #     return contador_derecho(self.derecho, prof)
+        #
+        # def contador_izquierdo(self, prof):
+        #     if self is None:
+        #         return prof
+        #     prof += 1
+        #     return contador_izquierdo(self.izquierdo, prof)
+        #
+        #     return prof
+        #
+        #
+        #
+        # #hola hola
+        #
+        # if self == Arbol():
+        #     return "ø"
+        # #aquí poner profundidad valor
+        # return f"({self.raiz}\n{" "*contador_izquierdo(self,-2)}{self.izquierdo}\n{" "*contador_derecho(self,-2)}{self.derecho})"
+        # #nivel = profundidad(2)
+        # #profundidad = 0 // "  "*2
+        #
+        # return "("+str(self.raiz) +"\n"+ profundidad(2) + repr(self.derecho) +"\n" + profundidad(2) + repr(self.izquierdo) + ")"
 
-        def contador_izquierdo(self, prof):
-            if self is None:
-                return prof
-            prof += 1
-            return contador_izquierdo(self.izquierdo, prof)
-
-            return prof
-
-        def nivel(self):
-            if self.raiz is None:
-                nivel = 0
-            return ""
-
-
-        #hola hola
-
-        if self == Arbol():
-            return "ø"
-        #aquí poner profundidad valor
-        return f"({self.raiz}\n{" "*contador_izquierdo(self,-2)}{self.izquierdo}\n{" "*contador_derecho(self,-2)}{self.derecho})"
-        #nivel = profundidad(2)
-        #profundidad = 0 // "  "*2
-
-        return "("+str(self.raiz) +"\n"+ profundidad(2) + repr(self.derecho) +"\n" + profundidad(2) + repr(self.izquierdo) + ")"
-
-
+    #Se comentó en la tarea que esta no sería recursiva.
+    #Al no pedir más que True si es vacío, notamos que de serlo su raíz en el más alto nivel es None, de modo que
+    #solo es necesario un chequeo. Si es el caso, el árbol es necesariamente vacío. En cualquier otro caso
+    #regresa False
     def es_vacio(self):
         """Devuelve True si el árbol es vacío, y False en otro caso."""
+        if self.raiz is None:
+            return True
         return False
 
-
+    #También se comentó que esta no sería recursiva en la asignación. Nuevamente consideramos que es así ya que
+    #solo es necesario un chequeo para poder determinar si un árbol consiste en una sola hoja (un nodo). Así,
+    #es_hoja checa si la raíz de un árbol no es None, en cuyo caso tiene raíz. Entonces solo checa si sus hijos
+    #son vacíos, y solo si ambos lo son devuelve True. En otro caso es un árbol vacío y regresa False al no ser
+    #una hoja.
     def es_hoja(self):
         """Devuelve True si el árbol tiene un único nodo, y False en otro caso.
         """
+        if self.raiz is not None:
+            if self.derecho == Arbol() and self.izquierdo == Arbol():
+                return True
+            else:
+                return False
         return False
 
 
@@ -93,10 +103,14 @@ class Arbol:
         """Devuelve un nuevo árbol idéntico a este."""
         return Arbol()
 
-
+    #La función es tal que suma 1 por la raíz del árbol y luego cuenta recursivamente los nodos al aplicarse a
+    #los subárboles. De este modo en la recursión se suman todas las raíces (nodos) que se encuentran en los hijos
+    #de las raíces superiores.
     def num_nodos(self):
         """Devuelve el número de nodos en el árbol."""
-        return 0
+        if self.raiz is None:
+            return 0
+        return 1+ self.derecho.num_nodos() + self.izquierdo.num_nodos()
 
 
     def direccion(self, elemento):
@@ -104,7 +118,15 @@ class Arbol:
         dirección (en binario) del primer nodo del árbol (en un recorrido
         in-order) que contenga al elemento.   En otro caso devuelve False.
         """
-        return ""
+        #Esto no sirve jajaj
+        # if self.raiz == elemento:
+        #     return "ok"
+        # ruta = ""
+        # if self.derecho == elemento:
+        #     ruta = ruta +"0"
+        # if self.izquierdo == elemento:
+        #     ruta = ruta +"1"
+        # return ruta
 
 
     def gira(self, direccion):
@@ -130,4 +152,5 @@ if __name__ == "__main__":
     t3=Arbol()
     t4=Arbol(2,t3,t2)
     #b=Arbol(c,Arbol(),Arbol(d))
-    print(t4)
+    #print(t4.es_vacio())
+    print(t4.direccion(2))
