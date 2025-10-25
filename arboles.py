@@ -35,10 +35,17 @@ class Arbol:
         )
 
     def repr_aux(self, num):
-        if self.raiz is not None:
-            return f"({self.raiz}\n{'  ' * (num + 1)}{self.izquierdo.repr_aux(num + 1)}\n{'  ' * (num + 1)}{self.derecho.repr_aux(num + 1)})"
-        return "ø"
+        if self.raiz is None:
+            return "ø"
+        return f"({self.raiz}\n{'  ' * (num + 1)}{self.izquierdo.repr_aux(num + 1)}\n{'  ' * (num + 1)}{self.derecho.repr_aux(num + 1)})"
 
+    # Si el árbol es vacío, significa que la raiz es None y por lo tanto
+    # solamente regresamos un conjunto vació, en otro caso, utilizamos la
+    # función auxiliar repr_aux que manejará con más cuidado la indentación, sin
+    # embargo, está el problema neuvamente si los árboles auxiliares son vacíos,
+    # por lo que hay que volver a tomarlos como caso especial (ya que a partir
+    # de ahí no sale hasta que tenga el string completo), si no, indentamos
+    # correctamente a derecho e izquierdo recursivamente y regresamos el string.
     def __repr__(self):
         """Representación en cadena, legible para humanos, de
         un árbol. Ejemplo:
@@ -82,7 +89,21 @@ class Arbol:
 
     def copia(self):
         """Devuelve un nuevo árbol idéntico a este."""
-        return Arbol()
+        arbol_nuevo = Arbol()
+        if self is Arbol():
+            return arbol_nuevo
+
+        arbol_nuevo.raiz = self.raiz
+
+        if self.izquierdo is None:
+            arbol_nuevo.izquierdo = None
+        else:
+            arbol_nuevo.izquierdo = self.izquierdo.copia()
+        if self.derecho is None:
+            arbol_nuevo.derecho = None
+        else:
+            arbol_nuevo.derecho = self.derecho.copia()
+        return arbol_nuevo
 
     # La función es tal que suma 1 por la raíz del árbol y luego cuenta recursivamente los nodos al aplicarse a
     # los subárboles. De este modo en la recursión se suman todas las raíces (nodos) que se encuentran en los hijos
@@ -127,10 +148,8 @@ class Arbol:
 
 if __name__ == "__main__":
     t1 = Arbol(3)
-    t2 = Arbol(1, t1, t1)
-    t3 = Arbol()
-    t4 = Arbol(2, t3, t2)
+    t2 = Arbol(4, t1)
+    t3 = Arbol(5, t2, t1)
     # b=Arbol(c,Arbol(),Arbol(d))
     # print(t4.es_vacio())
-    print(t4.direccion(2))
-
+    print(t3)
