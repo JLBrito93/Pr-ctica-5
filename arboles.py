@@ -45,11 +45,37 @@ class Arbol:
         ø
         ø)))
         """
-        if self == Arbol ():
-            print("a")
+        def contador_derecho(self, prof):
+            # return f"({self.raiz}\n{profundidad(prof+1)}{self.derecho}\n{profundidad(prof+1)}{self.izquierdo})"
+            if self is None:
+                return prof
+            prof += 1
+            return contador_derecho(self.derecho, prof)
+
+        def contador_izquierdo(self, prof):
+            if self is None:
+                return prof
+            prof += 1
+            return contador_izquierdo(self.izquierdo, prof)
+
+            return prof
+
+        def nivel(self):
+            if self.raiz is None:
+                nivel = 0
+            return ""
+
+
+        #hola hola
+
+        if self == Arbol():
             return "ø"
-        print("b")
-        return "("+str(self.raiz) +"\n  " + repr(self.derecho) + "\n  " + repr(self.izquierdo) + ")"
+        #aquí poner profundidad valor
+        return f"({self.raiz}\n{" "*contador_izquierdo(self,-2)}{self.izquierdo}\n{" "*contador_derecho(self,-2)}{self.derecho})"
+        #nivel = profundidad(2)
+        #profundidad = 0 // "  "*2
+
+        return "("+str(self.raiz) +"\n"+ profundidad(2) + repr(self.derecho) +"\n" + profundidad(2) + repr(self.izquierdo) + ")"
 
 
     def es_vacio(self):
@@ -98,7 +124,10 @@ class Arbol:
         """
         return False
 
-t1=Arbol(3)
-t2=Arbol(1,t1,t1)
-#b=Arbol(c,Arbol(),Arbol(d))
-print(t2.__repr__())
+if __name__ == "__main__":
+    t1=Arbol(3)
+    t2=Arbol(1,t1,t1)
+    t3=Arbol()
+    t4=Arbol(2,t3,t2)
+    #b=Arbol(c,Arbol(),Arbol(d))
+    print(t4)
