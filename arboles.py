@@ -40,9 +40,9 @@ class Arbol:
         return f"({self.raiz}\n{'  ' * (num + 1)}{self.izquierdo.repr_aux(num + 1)}\n{'  ' * (num + 1)}{self.derecho.repr_aux(num + 1)})"
 
     # Si el árbol es vacío, significa que la raiz es None y por lo tanto
-    # solamente regresamos un conjunto vació, en otro caso, utilizamos la
+    # solamente regresamos un conjunto vacio, en otro caso, utilizamos la
     # función auxiliar repr_aux que manejará con más cuidado la indentación, sin
-    # embargo, está el problema neuvamente si los árboles auxiliares son vacíos,
+    # embargo, está el problema nuevamente si los árboles auxiliares son vacíos,
     # por lo que hay que volver a tomarlos como caso especial (ya que a partir
     # de ahí no sale hasta que tenga el string completo), si no, indentamos
     # correctamente a derecho e izquierdo recursivamente y regresamos el string.
@@ -117,17 +117,24 @@ class Arbol:
     def direccion(self, elemento):
         """Si elemento se encuentra en el árbol, devuelve cadena con la
         dirección (en binario) del primer nodo del árbol (en un recorrido
-        in-order) que contenga al elemento.   En otro caso devuelve False.
+        in-order) que contenga al elemento. En otro caso devuelve False.
         """
-        # Esto no sirve jajaj
+
+        # if self.raiz is None:
+        #     return False
         # if self.raiz == elemento:
-        #     return "ok"
-        # ruta = ""
-        # if self.derecho == elemento:
-        #     ruta = ruta +"0"
-        # if self.izquierdo == elemento:
-        #     ruta = ruta +"1"
-        # return ruta
+        #     return ""
+        #
+        # camino_i = self.izquierdo.direccion(elemento)
+        # if camino_i is not False:
+        #     return "0" + camino_i
+        #
+        # camino_d = self.derecho.direccion(elemento)
+        # if camino_d is not False:
+        #     return "1" +camino_d
+        #
+        # return False
+
 
     def gira(self, direccion):
         """Recibe como entrada una dirección dada como una cadena binaria, y gira
@@ -137,13 +144,33 @@ class Arbol:
         corresponde a un nodo del árbol, se devuelve una copia del árbol
         original.
         """
-        return Arbol()
+        # if direccion == ""
+        #     if self.raiz is None:
+        #         return self.copia()
+        #     nuevo_d = self.izquierdo
+        #     nuevo_i = self.derecho
+        #     self.derecho= nuevo_i
+        #     self.izquierdo= nuevo_d
+        # return Arbol()
 
     def es_isomorfo(self, arbol):
         """Compara dos árboles binarios y devuelve True si son isomorfos,
         False en otro caso.
         """
-        return False
+        # if self.raiz is None:
+        #     if arbol.raiz is None:
+        #         return
+        #     return False
+        # if self.derecho.raiz == arbol.derecho.raiz:
+        #     if self.izquierdo.raiz == arbol.izquierdo.raiz:
+        #         self.derecho.es_isomorfo(arbol.derecho)
+        #         self.izquierdo.es_isomorfo(arbol.izquierdo)
+        #     return False
+        # if self.derecho == arbol.izquierdo:
+        #     if self.izquierdo == arbol.derecho:
+        #         self.izquierdo.es_isomorfo(arbol.derecho)
+        #         self.derecho.es_isomorfo(arbol.izquierdo)
+        # return True
 
 
 if __name__ == "__main__":
@@ -152,4 +179,4 @@ if __name__ == "__main__":
     t3 = Arbol(5, t2, t1)
     # b=Arbol(c,Arbol(),Arbol(d))
     # print(t4.es_vacio())
-    print(t3)
+    print(t1.direccion(2))
