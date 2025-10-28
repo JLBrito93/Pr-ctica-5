@@ -146,12 +146,14 @@ class TestArbol(unittest.TestCase):
         a = Arbol(
             e[0], Arbol(e[1], Arbol(e[2]), Arbol(e[3])), Arbol(e[4], Arbol(e[5]), None)
         )
+        # print(a)
         b = Arbol(
             e[0], Arbol(e[4], Arbol(e[5]), None), Arbol(e[1], Arbol(e[2]), Arbol(e[3]))
         )
         c = Arbol(
             e[0], Arbol(e[1], Arbol(e[2]), Arbol(e[3])), Arbol(e[4], None, Arbol(e[5]))
         )
+        # print(c)
         d = Arbol(
             e[0], Arbol(e[1], Arbol(e[3]), Arbol(e[2])), Arbol(e[4], None, Arbol(e[5]))
         )

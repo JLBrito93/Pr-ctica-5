@@ -63,9 +63,10 @@ class Arbol:
 
         return self.repr_aux(0)
 
-    # Se comentó en la tarea que esta no sería recursiva.
-    # Al no pedir más que True si es vacío, notamos que de serlo su raíz en el más alto nivel es None, de modo que
-    # solo es necesario un chequeo. Si es el caso, el árbol es necesariamente vacío. En cualquier otro caso
+    # Se comentó en la tarea que esta no sería recursiva. Al no pedir más
+    # que True si es vacío, notamos que de serlo su raíz en el más alto
+    # nivel es None, de modo que solo es necesario un chequeo. Si es el
+    # caso, el árbol es necesariamente vacío. En cualquier otro caso
     # regresa False
     def es_vacio(self):
         """Devuelve True si el árbol es vacío, y False en otro caso."""
@@ -73,11 +74,13 @@ class Arbol:
             return True
         return False
 
-    # También se comentó que esta no sería recursiva en la asignación. Nuevamente consideramos que es así ya que
-    # solo es necesario un chequeo para poder determinar si un árbol consiste en una sola hoja (un nodo). Así,
-    # es_hoja checa si la raíz de un árbol no es None, en cuyo caso tiene raíz. Entonces solo checa si sus hijos
-    # son vacíos, y solo si ambos lo son devuelve True. En otro caso es un árbol vacío y regresa False al no ser
-    # una hoja.
+    # También se comentó que esta no sería recursiva en la asignación.
+    # Nuevamente consideramos que es así ya que solo es necesario un chequeo
+    # para poder determinar si un árbol consiste en una sola hoja (un nodo).
+    # Así, es_hoja checa si la raíz de un árbol no es None, en cuyo caso
+    # tiene raíz. Entonces solo checa si sus hijos son vacíos, y solo si
+    # ambos lo son devuelve True. En otro caso es un árbol vacío y regresa
+    # False al no ser una hoja.
     def es_hoja(self):
         """Devuelve True si el árbol tiene un único nodo, y False en otro caso."""
         if self.raiz is not None:
@@ -87,6 +90,12 @@ class Arbol:
                 return False
         return False
 
+    # Crea un árbol nuevo y checa si self es un árbol vacío, en caso de que
+    # lo sea, regresa el árbol nuevo (que es vacío), si no, asigna la raiz
+    # del árbol original al nuevo y si el izquierdo es None (análogamente
+    # con el derecho) le asigna dichos valores a las ramas del árbol nuevo,
+    # si no, le asigna una copia del derecho y del izquierdo
+    # respectivamente, finalmente, regresa la copia de ambos árboles.
     def copia(self):
         """Devuelve un nuevo árbol idéntico a este."""
         arbol_nuevo = Arbol()
@@ -105,19 +114,21 @@ class Arbol:
             arbol_nuevo.derecho = self.derecho.copia()
         return arbol_nuevo
 
-    # La función es tal que suma 1 por la raíz del árbol y luego cuenta recursivamente los nodos al aplicarse a
-    # los subárboles. De este modo en la recursión se suman todas las raíces (nodos) que se encuentran en los hijos
-    # de las raíces superiores.
+    # La función es tal que suma 1 por la raíz del árbol y luego cuenta
+    # recursivamente los nodos al aplicarse a los subárboles. De este modo
+    # en la recursión se suman todas las raíces (nodos) que se encuentran en
+    # los hijos de las raíces superiores.
     def num_nodos(self):
         """Devuelve el número de nodos en el árbol."""
         if self.raiz is None:
             return 0
         return 1 + self.derecho.num_nodos() + self.izquierdo.num_nodos()
 
-    #La función recorre los caminos en el recorrido in-order al recorrer en cada caso los caminos derechos
-    #seguidos de los izquierdos. Si al finalizar los recorridos nunca encuentra el nodo solicitado, regresa False.
-    #Si el nodo existe, al encontrarlo construye la dirección paso por paso agregando las direcciones desde la
-    #última hasta la primera.
+    # La función recorre los caminos en el recorrido in-order al recorrer en
+    # cada caso los caminos derechos seguidos de los izquierdos. Si al
+    # finalizar los recorridos nunca encuentra el nodo solicitado, regresa
+    # False. Si el nodo existe, al encontrarlo construye la dirección paso
+    # por paso agregando las direcciones desde la última hasta la primera.
     def direccion(self, elemento):
         """Si elemento se encuentra en el árbol, devuelve cadena con la
         dirección (en binario) del primer nodo del árbol (en un recorrido
@@ -139,7 +150,14 @@ class Arbol:
 
         return False
 
-
+    # Iniciamos con una copia para garantizar que se regrese una copia a lo
+    # más al final, si se hace un giro se entrega un árbol nuevo que cumple
+    # lo pedido. La función la hicimos de modo que recorra la dirección
+    # checando la cabeza de la cadena dada y si la direcchión es vacía,
+    # si no lo es, se observa si el primer dígito es 0 o 1, para determinar
+    # si se hará la recursión sobre el subárbol izquierdo o el derecho
+    # respectivamente. Al terminar de recorrer la lista cambia los
+    # subárboles o si se alcanza uno vacío regresa el árbol sin cambios.
     def gira(self, direccion):
         """Recibe como entrada una dirección dada como una cadena binaria, y gira
         (intercambia el subárbol izquierdo por el derecho) el subárbol que tiene
@@ -167,10 +185,29 @@ class Arbol:
         return arbol
 
 
+    # Primero checa si las raíces son distintas, ya que, si lo son, no tiene
+    # sentido hacer el resto del chequeo, si las raíces son iguales,
+    # elegimos el lado derecho (porque no queremos a los zurdos) y chechamos
+    # si son iguales (por el caso donde self.derecho sea None) o si son
+    # isomorfos y si cumple lo checamos para el lado izquierdo de la misma
+    # forma, si no pasa el lado derecho, implica que a fuerzas el lado
+    # derecho debe estar relacionado con el izquierdo y checa a pares si
+    # ambas ramas son isomorfas, en caso de que este último falle, sabemos
+    # que no son ciertos y entonces devuelve falso.
     def es_isomorfo(self, arbol):
         """Compara dos árboles binarios y devuelve True si son isomorfos,
         False en otro caso.
         """
+        if self.raiz != arbol.raiz:
+            return False
+        if self.derecho == arbol.derecho or self.derecho.es_isomorfo(arbol.derecho):
+            if self.izquierdo == arbol.izquierdo or self.izquierdo.es_isomorfo(arbol.izquierdo):
+                return True
+
+        if self.izquierdo.es_isomorfo(arbol.derecho):
+            return self.derecho.es_isomorfo(arbol.izquierdo)
+
+        return False
 
 
 if __name__ == "__main__":
