@@ -114,26 +114,30 @@ class Arbol:
             return 0
         return 1 + self.derecho.num_nodos() + self.izquierdo.num_nodos()
 
+    #La función recorre los caminos en el recorrido in-order al recorrer en cada caso los caminos derechos
+    #seguidos de los izquierdos. Si al finalizar los recorridos nunca encuentra el nodo solicitado, regresa False.
+    #Si el nodo existe, al encontrarlo construye la dirección paso por paso agregando las direcciones desde la
+    #última hasta la primera.
     def direccion(self, elemento):
         """Si elemento se encuentra en el árbol, devuelve cadena con la
         dirección (en binario) del primer nodo del árbol (en un recorrido
         in-order) que contenga al elemento. En otro caso devuelve False.
         """
 
-        # if self.raiz is None:
-        #     return False
-        # if self.raiz == elemento:
-        #     return ""
-        #
-        # camino_i = self.izquierdo.direccion(elemento)
-        # if camino_i is not False:
-        #     return "0" + camino_i
-        #
-        # camino_d = self.derecho.direccion(elemento)
-        # if camino_d is not False:
-        #     return "1" +camino_d
-        #
-        # return False
+        if self.raiz is None:
+            return False
+        if self.raiz == elemento:
+            return ""
+
+        camino_i = self.izquierdo.direccion(elemento)
+        if camino_i is not False:
+            return "0" + camino_i
+
+        camino_d = self.derecho.direccion(elemento)
+        if camino_d is not False:
+            return "1" +camino_d
+
+        return False
 
 
     def gira(self, direccion):
@@ -144,39 +148,37 @@ class Arbol:
         corresponde a un nodo del árbol, se devuelve una copia del árbol
         original.
         """
-        # if direccion == ""
-        #     if self.raiz is None:
-        #         return self.copia()
-        #     nuevo_d = self.izquierdo
-        #     nuevo_i = self.derecho
-        #     self.derecho= nuevo_i
-        #     self.izquierdo= nuevo_d
-        # return Arbol()
+        arbol = self.copia()
+        if direccion == "":
+            arbol.izquierdo, arbol.derecho = arbol.derecho, arbol.izquierdo
+            return arbol
+        if direccion[0] == "0":
+            if arbol.izquierdo is None:
+                return arbol
+
+            arbol.izquierdo = arbol.izquierdo.gira(direccion[1::])
+
+        if direccion[0] == "1":
+            if arbol.derecho is None:
+                return arbol
+
+            arbol.derecho = arbol.derecho.gira(direccion[1::])
+
+        return arbol
+
 
     def es_isomorfo(self, arbol):
         """Compara dos árboles binarios y devuelve True si son isomorfos,
         False en otro caso.
         """
-        # if self.raiz is None:
-        #     if arbol.raiz is None:
-        #         return
-        #     return False
-        # if self.derecho.raiz == arbol.derecho.raiz:
-        #     if self.izquierdo.raiz == arbol.izquierdo.raiz:
-        #         self.derecho.es_isomorfo(arbol.derecho)
-        #         self.izquierdo.es_isomorfo(arbol.izquierdo)
-        #     return False
-        # if self.derecho == arbol.izquierdo:
-        #     if self.izquierdo == arbol.derecho:
-        #         self.izquierdo.es_isomorfo(arbol.derecho)
-        #         self.derecho.es_isomorfo(arbol.izquierdo)
-        # return True
 
 
 if __name__ == "__main__":
     t1 = Arbol(3)
     t2 = Arbol(4, t1)
     t3 = Arbol(5, t2, t1)
+    t4 = Arbol(6, t3)
     # b=Arbol(c,Arbol(),Arbol(d))
     # print(t4.es_vacio())
-    print(t1.direccion(2))
+    print(t4)
+    print(t4.gira("0"))
